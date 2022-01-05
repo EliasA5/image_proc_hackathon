@@ -11,7 +11,7 @@ function [BB, mask] = seg2(img)
 
 %     figure; imshow(image_morph);
     
-    stats = regionprops('table',image_morph,'Centroid','MajorAxisLength','MinorAxisLength', 'BoundingBox');
+    stats = regionprops('table',image_morph,'Centroid','MajorAxisLength','MinorAxisLength', 'BoundingBox', 'FilledImage');
     centers = stats.Centroid;
     diameters = mean([stats.MajorAxisLength stats.MinorAxisLength],2);
     radii = diameters/2;
@@ -19,16 +19,21 @@ function [BB, mask] = seg2(img)
     BB = stats.BoundingBox(i, :);
     
     BB = uint16(BB);
+    mask = zeros(size(img_gr), 'logical');
+    filled_img = stats.FilledImage(i);
+    filled_img = filled_img{1, 1};
+    [w, h] = size(filled_img);
+    mask(BB(2):BB(2)+w-1, BB(1):BB(1)+h-1) = filled_img;
 
 %     mask = zeros (size(img_red));
 %     mask (BB(1):(BB(1)+max_rad),BB(2)) = 1;
 %     mask (BB(1),BB(2):(BB(2)+max_rad)) = 1;
 %     mask (BB(1)+max_rad,BB(2):(BB(2)+max_rad)) = 1;
 %     mask (BB(1):(BB(1)+max_rad),BB(2)+max_rad) = 1;
-    mask = zeros(size(mask));
-    mask = insertShape(mask,'FilledCircle',[centers(i,1) centers(i,2) max_rad]);
+%     mask = zeros(size(mask));
+%     mask = insertShape(mask,'FilledCircle',[centers(i,1) centers(i,2) max_rad]);
     
-    mask = rgb2gray(mask) > 0;
+%     mask = rgb2gray(mask) > 0;
 %     figure; imshow(img);
 %     hold on
 %     imshow(mask)
