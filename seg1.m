@@ -8,7 +8,7 @@ end
 
 
 function [filter,box_edges] = dip_find_cap(img)
-img = dip_normalize_rgb_img(img);
+img = dip_normalize_rgb_img(double(img));
 [cap_h, cap_s, cap_v] = dip_rgb2hsv(img(:,:,1), img(:,:,2), img(:,:,3));
 cap_h_filt = zeros(size(cap_h));
 cap_s_filt = zeros(size(cap_s));
