@@ -14,7 +14,7 @@ cap_h_filt = zeros(size(cap_h));
 cap_s_filt = zeros(size(cap_s));
 cap_v_filt = zeros(size(cap_v));
 cap_h_filt((cap_h >= 0) & (cap_h <= 1)) = 1;
-cap_s_filt((cap_s >= 0) & (cap_s <= 0.4)) = 1;
+cap_s_filt((cap_s >= 0) & (cap_s <= 1)) = 1;
 cap_v_filt((cap_v >= 0) & (cap_v < 0.15)) = 1;
 
 filter = cap_h_filt .* cap_s_filt .* cap_v_filt;
